@@ -1,0 +1,38 @@
+import { checkUser } from "@/lib/actions/user.action";
+import Link from "next/link";
+
+const Navbar = () => {
+  const user = checkUser();
+  return (
+    <header className="py-5">
+      <nav className="flex items-center justify-between max-w-6xl mx-auto">
+        <Link href={"/"}>
+          <span className="text-2xl font-bold ">
+            Expense Tracker
+          </span>
+        </Link>
+        <ul className="flex items-center gap-11">
+          <li>
+            <Link href={"/"}>Home</Link>
+          </li>
+          <li>
+            <Link href={"/about"}>About</Link>
+          </li>
+          <li>
+            <Link href={"/contact"}>Contact</Link>
+          </li>
+        </ul>
+        <div>
+          <Link
+            className="bg-dark px-4 py-2 font-medium text-sm text-white rounded-lg"
+            href={"/sign-in"}
+          >
+            Sign In
+          </Link>
+        </div>
+      </nav>
+    </header>
+  );
+};
+
+export default Navbar;

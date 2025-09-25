@@ -1,6 +1,7 @@
+import Guest from "@/components/shared/Guest"
 const Home = () => {
   return (
-    <div className="text-red-600">Hello</div>
+    <Guest />
   );
 }
  
