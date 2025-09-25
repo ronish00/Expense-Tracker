@@ -22,7 +22,7 @@ export const checkUser = async () => {
         data: {
             clerkId: user.id,
             email: user.emailAddresses[0]?.emailAddress || '',
-            name: user.username,
+            username: user.username || '',
             imageUrl: user.imageUrl,
         }
     })

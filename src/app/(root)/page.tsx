@@ -1,5 +1,16 @@
+"use client"
+
 import Guest from "@/components/shared/Guest"
-const Home = () => {
+import { useUser } from "@/context/UserContext";
+const Home =  () => {
+  const user =useUser();
+  
+  if(user){
+    return (
+      <div>Hello</div>
+    )
+  }
+
   return (
     <Guest />
   );

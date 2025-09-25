@@ -1,15 +1,18 @@
-import { checkUser } from "@/lib/actions/user.action";
+"use client";
+
+import { useUser } from "@/context/UserContext";
+import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 
 const Navbar = () => {
-  const user = checkUser();
+
+  const user = useUser();
+
   return (
     <header className="py-5">
       <nav className="flex items-center justify-between max-w-6xl mx-auto">
         <Link href={"/"}>
-          <span className="text-2xl font-bold ">
-            Expense Tracker
-          </span>
+          <span className="text-2xl font-bold ">Expense Tracker</span>
         </Link>
         <ul className="flex items-center gap-11">
           <li>
@@ -23,12 +26,16 @@ const Navbar = () => {
           </li>
         </ul>
         <div>
-          <Link
-            className="bg-dark px-4 py-2 font-medium text-sm text-white rounded-lg"
-            href={"/sign-in"}
-          >
-            Sign In
-          </Link>
+          {user ? (
+            <UserButton showName />
+          ) : (
+            <Link
+              className="bg-dark px-4 py-2 font-medium text-sm text-white rounded-lg"
+              href={"/sign-in"}
+            >
+              Sign In
+            </Link>
+          )}
         </div>
       </nav>
     </header>
