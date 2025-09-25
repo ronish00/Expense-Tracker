@@ -130,7 +130,7 @@ const Guest = () => {
                     <p className="text-sm">Verified User</p>
                   </div>
                 </div>
-                <p>"{item.desc}"</p>
+                <p>&quot;{item.desc}&quot;</p>
                 <div className="mt-5">
                   {item.stars.map((star, index) => (
                     <span key={index}>{star}</span>
