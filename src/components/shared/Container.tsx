@@ -7,7 +7,7 @@ const Container = ({
   children: ReactNode;
   extraClass?: string;
 }) => {
-  return <div className={`max-w-6xl mx-auto ${extraClass}`}>{children}</div>;
+  return <div className={`lg:max-w-6xl lg:px-0 px-8 mx-auto ${extraClass}`}>{children}</div>;
 };
 
 export default Container;
