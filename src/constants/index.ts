@@ -1,3 +1,36 @@
+export const metrics = [
+  {
+    title: "Active Users",
+    detail: "10k+"
+  },
+  {
+    title: "Money Tracked",
+    detail: "$2M+"
+  },
+  {
+    title: "Satisfaction Rate",
+    detail: "99%"
+  }
+]
+
+export const features = [
+  {
+    title: "AI-Powered Insights",
+    desc: "Get intelligent analysis of your spending patterns with personalized AI recommendations and automated category suggestions that learn from your behavior.",
+    icon: "🤖",
+  },
+  {
+    title: "Smart Categorization",
+    desc: "Let our AI automatically categorize your expenses with 99% accuracy and provide tailored recommendations to enhance your budget management effortlessly.",
+    icon: "✨",
+  },
+  {
+    title: "Intelligent Dashboard",
+    desc: "Experience a modern, AI-enhanced interface with real-time insights, interactive financial analytics, and beautiful visualizations that make sense of your data.",
+    icon: "📊",
+  },
+];
+
 export const faq = [
   {
     title: "What is Expense Tracker?",

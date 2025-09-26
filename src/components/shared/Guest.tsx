@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Container from "./Container";
-import { faq, testimonials } from "@/constants";
+import { faq, features, metrics, testimonials } from "@/constants";
 
 const Guest = () => {
   return (
@@ -44,30 +44,52 @@ const Guest = () => {
           </div>
 
           {/* Cards */}
-          <div className="flex flex-col w-full md:flex-row items-center gap-8 mt-8">
-            <div className="flex flex-col w-full items-center gap-2.5 shadow-xl p-6 rounded-xl">
-              <div className="bg-dark p-2.5 rounded-xl">🤖</div>
-              <h3 className="text-lg font-semibold">Ai Insights</h3>
-              <p className="text-sm text-center">
-                Smart analysis of your spending patterns
-              </p>
-            </div>
-            <div className="flex flex-col w-full items-center gap-2.5 shadow-xl p-6 rounded-xl">
-              <div className="bg-dark p-2.5 rounded-xl">✨</div>
-              <h3 className="text-lg font-semibold">Auto Categories</h3>
-              <p className="text-sm text-center">Intelligent expense categorization</p>
-            </div>
-            <div className="flex flex-col w-full items-center gap-2.5 shadow-xl p-6 rounded-xl">
-              <div className="bg-dark p-2.5 rounded-xl">📊</div>
-              <h3 className="text-lg font-semibold">Smart Dashboard</h3>
-              <p className="text-sm text-center">Beautiful, intuitive financial overview</p>
-            </div>
+          <div className="flex flex-col w-full lg:w-4xl md:flex-row gap-8 items-center mt-12">
+            {metrics.map((item) => (
+              <div
+                className="p-8 shadow-xl w-full rounded-xl grow text-center"
+                key={item.title}
+              >
+                <h3 className="text-4xl font-bold">{item.detail}</h3>
+                <p className="text-xl font-medium mt-3">{item.title}</p>
+              </div>
+            ))}
           </div>
         </Container>
       </section>
 
       {/* Line */}
       <div className="h-0.5 w-full bg-dark mt-18"></div>
+
+      {/* Features */}
+      <section className="mt-20">
+        <Container>
+          <div className="flex flex-col items-center mx-auto lg:w-3xl text-center">
+            <div className="flex items-center gap-1.5 px-4 py-2 shadow w-max rounded-4xl">
+              <span className="w-2 h-2 rounded-full bg-dark"></span>
+              <span className="font-medium text-sm">Features</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold mt-3 mb-4">
+              Why Choose ExpenseTracker AI?
+            </h2>
+            <p className="text-base md:text-lg">
+              Discover the powerful features that make our AI-driven platform
+              the smart choice for modern financial management.
+            </p>
+          </div>
+          <div className="flex flex-col lg:flex-row gap-8 items-center lg:justify-between mt-12">
+            {features.map((item) => (
+              <div className="p-8 shadow-xl rounded-xl grow" key={item.title}>
+                <div className="w-12 h-12 rounded-xl bg-dark grid place-items-center">
+                  {item.icon}
+                </div>
+                <h3 className="text-2xl font-bold my-4">{item.title}</h3>
+                <p>{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </section>
 
       {/* FAQ */}
       <section className="mt-20">
@@ -112,7 +134,9 @@ const Guest = () => {
               <span className="w-2 h-2 rounded-full bg-dark"></span>
               <span className="font-medium text-sm">Testimonials</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mt-3 mb-4">What Our User Say</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mt-3 mb-4">
+              What Our User Say
+            </h2>
             <p className="text-base md:text-lg">
               Join thousands of satisfied users who have transformed their
               financial habits with ExpenseTracker AI.
@@ -142,48 +166,62 @@ const Guest = () => {
         </Container>
       </section>
 
-      {/* footer */}
-      <section className="bg-dark mt-28 py-16">
-        <Container extraClass={"flex flex-col md:flex-row gap-[48px] md:gap-[200px]"}>
-          <div className="md:w-xs">
-            <h3 className="text-white text-2xl font-bold mb-6">
-              Expense Tracker
-            </h3>
-            <p className="text-white">
-              Intelligent financial management powered by AI. Track your
-              expenses, manage your budget, and gain insights into your spending
-              patterns.
+      {/* Line */}
+      <div className="h-0.5 w-full bg-dark mt-20"></div>
+
+      {/* CTA */}
+      <section className="flex items-center justify-center  mt-20">
+        <Container extraClass={"flex flex-col items-center"}>
+          {/* Heading */}
+          <div className="flex items-center gap-1.5 px-4 py-2 shadow w-max rounded-4xl">
+            <span className="w-2 h-2 rounded-full bg-dark"></span>
+            <span className="font-medium text-sm">
+              Ready to Transform Your Finances?
+            </span>
+          </div>
+          <div className="text-center lg:w-4xl">
+            <h1 className="text-4xl md:text-6xl font-bold mt-3 mb-6">
+              Take Control of Your Financial Future
+            </h1>
+            <p className="text-lg md:text-xl">
+              Join thousands of users who have already transformed their
+              financial habits with ExpenseTracker AI. Start your journey
+              towards smarter budgeting today.
             </p>
           </div>
-          <div>
-            <h4 className="text-white text-lg font-semibold">Quick Links</h4>
-            <div className="flex flex-col gap-2 mt-6">
-              <Link className="text-white" href={"/"}>
-                Home
-              </Link>
-              <Link className="text-white" href={"/about"}>
-                About
-              </Link>
-              <Link className="text-white" href={"/contact"}>
-                Contact
-              </Link>
-            </div>
+
+          {/*Buttons */}
+          <div className="flex items-center gap-4 mt-8">
+            <Link
+              className="bg-dark text-white py-4 px-4 md:px-8 rounded-xl flex items-center gap-2"
+              href={"/sign-up"}
+            >
+              <span>Get Started</span>
+              <span>→</span>
+            </Link>
+            <Link
+              className="bg-transparent border-dark border-1 py-4 px-4 md:px-8 rounded-xl"
+              href={"/about"}
+            >
+              Learn More
+            </Link>
           </div>
-          <div>
-            <h4 className="text-white text-lg font-semibold">Quick Links</h4>
-            <div className="flex flex-col gap-2 mt-6">
-              <div className="flex gap-4 items-center">
-                <span className="bg-white rounded-lg p-2">🤖</span>
-                <p className="text-white">AI-Powered Insights</p>
-              </div>
-              <div className="flex gap-4 items-center">
-                <span className="bg-white rounded-lg p-2">✨</span>
-                <p className="text-white">Smart Categorization</p>
-              </div>
-              <div className="flex gap-4 items-center">
-                <span className="bg-white rounded-lg p-2">📊</span>
-                <p className="text-white">Analytics Dashboard</p>
-              </div>
+
+          {/* Cards */}
+          <div className="flex flex-col lg:w-4xl md:flex-row gap-8 mt-12">
+            <div className="p-8 w-full grow text-center">
+              <h3 className="text-4xl font-bold">Free</h3>
+              <p className="text-xl font-medium mt-3">
+                No credit card required
+              </p>
+            </div>
+            <div className="p-8 w-full grow text-center">
+              <h3 className="text-4xl font-bold">24/7</h3>
+              <p className="text-xl font-medium mt-3">AI-powered support</p>
+            </div>
+            <div className="p-8 w-full grow text-center">
+              <h3 className="text-4xl font-bold">Instant</h3>
+              <p className="text-xl font-medium mt-3">Setup in minutes</p>
             </div>
           </div>
         </Container>

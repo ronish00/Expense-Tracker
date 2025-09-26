@@ -10,11 +10,11 @@ const Navbar = () => {
 
   return (
     <header className="py-5 md:block hidden">
-      <nav className="flex items-center justify-between lg:max-w-6xl mx-auto lg:px-6 px-8">
+      <nav className="flex items-center justify-between lg:max-w-6xl mx-auto lg:px-8 px-6">
         <Link href={"/"}>
           <span className="text-2xl font-bold ">Expense Tracker</span>
         </Link>
-        <ul className="flex items-center gap-11">
+        {/* <ul className="flex items-center gap-11">
           <li>
             <Link href={"/"}>Home</Link>
           </li>
@@ -24,7 +24,7 @@ const Navbar = () => {
           <li>
             <Link href={"/contact"}>Contact</Link>
           </li>
-        </ul>
+        </ul> */}
         <div>
           {user ? (
             <UserButton showName />

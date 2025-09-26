@@ -1,3 +1,4 @@
+import Footer from "@/components/shared/Footer";
 import MobileNav from "@/components/shared/MobileNav";
 import Navbar from "@/components/shared/Navbar";
 import { UserProvider } from "@/context/UserContext";
@@ -13,6 +14,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
         <Navbar />
         <MobileNav />
         {children}
+        <Footer />
       </UserProvider>
     </main>
   );
