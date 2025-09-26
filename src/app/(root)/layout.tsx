@@ -1,5 +1,4 @@
 import Footer from "@/components/shared/Footer";
-import MobileNav from "@/components/shared/MobileNav";
 import Navbar from "@/components/shared/Navbar";
 import { UserProvider } from "@/context/UserContext";
 import { checkUser } from "@/lib/actions/user.action";
@@ -12,7 +11,6 @@ const Layout = async ({ children }: { children: ReactNode }) => {
     <main>
       <UserProvider user={user}>
         <Navbar />
-        <MobileNav />
         {children}
         <Footer />
       </UserProvider>

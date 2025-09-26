@@ -9,7 +9,7 @@ const Navbar = () => {
   const user = useUser();
 
   return (
-    <header className="py-5 md:block hidden">
+    <header className="py-5">
       <nav className="flex items-center justify-between lg:max-w-6xl mx-auto lg:px-8 px-6">
         <Link href={"/"}>
           <span className="text-2xl font-bold ">Expense Tracker</span>

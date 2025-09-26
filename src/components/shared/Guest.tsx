@@ -37,7 +37,7 @@ const Guest = () => {
             </Link>
             <Link
               className="bg-transparent border-dark border-1 py-4 px-4 md:px-8 rounded-xl"
-              href={"/about"}
+              href={"#features"}
             >
               Learn More
             </Link>
@@ -62,7 +62,7 @@ const Guest = () => {
       <div className="h-0.5 w-full bg-dark mt-18"></div>
 
       {/* Features */}
-      <section className="mt-20">
+      <section id="features" className="mt-20">
         <Container>
           <div className="flex flex-col items-center mx-auto lg:w-3xl text-center">
             <div className="flex items-center gap-1.5 px-4 py-2 shadow w-max rounded-4xl">
@@ -201,7 +201,7 @@ const Guest = () => {
             </Link>
             <Link
               className="bg-transparent border-dark border-1 py-4 px-4 md:px-8 rounded-xl"
-              href={"/about"}
+              href={"#features"}
             >
               Learn More
             </Link>
