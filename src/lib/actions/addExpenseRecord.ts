@@ -2,6 +2,8 @@
 import { auth } from "@clerk/nextjs/server";
 import { db } from "@/lib/database/db";
 import { revalidatePath } from "next/cache";
+import z from "zod";
+import { formSchema } from "@/components/shared/AddNewRecord";
 
 interface RecordData {
   text: string;
@@ -15,11 +17,13 @@ interface RecordResult {
   error?: string;
 }
 
-async function addExpenseRecord(formData: FormData): Promise<RecordResult> {
-  const textValue = formData.get("text");
-  const amountValue = formData.get("amount");
-  const categoryValue = formData.get("category");
-  const dateValue = formData.get("date"); // Extract date from formData
+async function addExpenseRecord(
+  formData: z.infer<typeof formSchema>
+): Promise<RecordResult> {
+  const textValue = formData.description;
+  const amountValue = formData.amount;
+  const categoryValue = formData.category;
+  const dateValue = formData.date; // Extract date from formData
 
   // Check for input values
   if (

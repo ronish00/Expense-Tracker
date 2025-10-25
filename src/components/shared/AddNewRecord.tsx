@@ -1,52 +1,68 @@
 "use client";
-import { useRef, useState } from "react";
+
 import addExpenseRecord from "@/lib/actions/addExpenseRecord";
 import { suggestCategory } from "@/lib/actions/suggestCategory";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
-const AddRecord = () => {
-  const formRef = useRef<HTMLFormElement>(null);
-  const [amount, setAmount] = useState(50); // Default value for expense amount
-  const [alertMessage, setAlertMessage] = useState<string | null>(null); // State for alert message
-  const [alertType, setAlertType] = useState<"success" | "error" | null>(null); // State for alert type
-  const [isLoading, setIsLoading] = useState(false); // State for loading spinner
-  const [category, setCategory] = useState(""); // State for selected expense category
-  const [description, setDescription] = useState(""); // State for expense description
-  const [isCategorizingAI, setIsCategorizingAI] = useState(false); // State for AI categorization loading
+export const formSchema = z.object({
+  description: z.string(),
+  date: z.string(),
+  category: z.string(),
+  amount: z.number(),
+});
 
-  const clientAction = async (formData: FormData) => {
-    setIsLoading(true); // Show spinner
-    setAlertMessage(null); // Clear previous messages
-    
-    formData.set("amount", amount.toString()); // Add the amount value to the form data
-    formData.set("category", category); // Add the selected category to the form data
+const AddNewRecord = () => {
+  const [loading, setLoading] = useState(false);
+  const [alertMessage, setAlertMessage] = useState<string | null>("");
+  const [alertType, setAlertType] = useState<"success" | "error" | null>(null);
+  const [categorizingAI, setCategorizingAI] = useState(false);
 
-    const { error } = await addExpenseRecord(formData); // Removed `data` since it's unused
+  const { register, handleSubmit, reset, setValue, watch } = useForm<
+    z.infer<typeof formSchema>
+  >({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      description: "",
+      category: "",
+      amount: 50,
+    },
+  });
 
-    if (error) {
-      setAlertMessage(`Error: ${error}`);
-      setAlertType("error"); // Set alert type to error
-    } else {
-      setAlertMessage("Expense record added successfully!");
-      setAlertType("success"); // Set alert type to success
-      formRef.current?.reset();
-      setAmount(50); // Reset the amount to the default value
-      setCategory(""); // Reset the category
-      setDescription(""); // Reset the description
+  const description = watch("description");
+
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    setLoading(true);
+    setAlertMessage("");
+    try {
+      const { error } = await addExpenseRecord(data);
+      if (error) {
+        setAlertType("error");
+        setAlertMessage(`Error: ${error}`);
+      } else {
+        setAlertType("success");
+        setAlertMessage("Expense Record Added Successfully");
+        reset();
+      }
+    } catch (error) {
+      setAlertType("error");
+      setAlertMessage("Failed to add expense record");
+    } finally {
+      setLoading(false);
     }
-
-    setIsLoading(false); // Hide spinner
   };
 
-
   const handleAISuggestCategory = async () => {
+    const description = watch("description");
     if (!description.trim()) {
-      setAlertMessage("Please enter a description first");
       setAlertType("error");
+      setAlertMessage("Please enter a description first");
       return;
     }
 
-    setIsCategorizingAI(true);
-    setAlertMessage(null);
+    setCategorizingAI(true);
 
     try {
       const result = await suggestCategory(description);
@@ -54,15 +70,15 @@ const AddRecord = () => {
         setAlertMessage(`AI Suggestion: ${result.error}`);
         setAlertType("error");
       } else {
-        setCategory(result.category);
-        setAlertMessage(`AI suggested category: ${result.category}`);
         setAlertType("success");
+        setValue("category", result.category);
+        setAlertMessage(`AI suggested category: ${result.category}`);
       }
     } catch {
       setAlertMessage("Failed to get AI category suggestion");
       setAlertType("error");
     } finally {
-      setIsCategorizingAI(false);
+      setCategorizingAI(false);
     }
   };
 
@@ -81,16 +97,9 @@ const AddRecord = () => {
           </p>
         </div>
       </div>
-      <form
-        ref={formRef}
-        onSubmit={(e) => {
-          e.preventDefault();
-          const formData = new FormData(formRef.current!);
-          clientAction(formData);
-        }}
-        className="space-y-6 sm:space-y-8"
-      >
-        {/* Expense Description and Date */}
+
+      {/* Form */}
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 p-3 sm:p-4  rounded-xl mb-0">
           {/* Expense Description */}
           <div className="space-y-1.5">
@@ -103,30 +112,25 @@ const AddRecord = () => {
             </label>
             <div className="relative">
               <input
-                type="text"
-                id="text"
-                name="text"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
                 className="w-full pl-3 pr-12 sm:pr-14 py-2.5 bg-white/7 border-2 border-gray-200/80 rounded-xl placeholder-gray-400 text-sm shadow-sm hover:shadow-md transition-all duration-200"
                 placeholder="Coffee, groceries, gas..."
-                required
+                {...register("description")}
               />
               <button
                 type="button"
                 onClick={handleAISuggestCategory}
-                disabled={isCategorizingAI || !description.trim()}
+                disabled={categorizingAI || !description.trim()}
                 className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 sm:w-8 sm:h-7 bg-dark disabled:from-gray-300 disabled:to-gray-300 text-white rounded-lg text-xs font-medium flex items-center justify-center shadow-lg hover:shadow-xl disabled:shadow-none transition-all duration-200"
                 title="AI Category Suggestion"
               >
-                {isCategorizingAI ? (
+                {categorizingAI ? (
                   <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                 ) : (
                   <span className="text-xs">✨</span>
                 )}
               </button>
             </div>
-            {isCategorizingAI && (
+            {categorizingAI && (
               <div className="flex items-center gap-2 text-xs">
                 <div className="w-1.5 h-1.5 bg-dark rounded-full animate-pulse"></div>
                 AI is analyzing your description...
@@ -145,16 +149,12 @@ const AddRecord = () => {
             </label>
             <input
               type="date"
-              name="date"
-              id="date"
               className="w-full px-3 py-2.5 bg-white/70 border-2 border-gray-200/80 rounded-xl text-sm shadow-sm hover:shadow-md transition-all duration-200"
-              required
-              onFocus={(e) => e.target.showPicker()}
+              {...register("date")}
             />
           </div>
         </div>
 
-        {/* Category Selection and Amount */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 p-3 sm:p-4 b rounded-xl mb-0">
           {/* Category Selection */}
           <div className="space-y-1.5">
@@ -166,12 +166,8 @@ const AddRecord = () => {
               Category
             </label>
             <select
-              id="category"
-              name="category"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
               className="w-full px-3 py-2.5 bg-white/70 border-2 border-gray-200/80 rounded-xl cursor-pointer text-sm shadow-sm hover:shadow-md transition-all duration-200"
-              required
+              {...register("category")}
             >
               <option value="" disabled className="text-gray-400">
                 Select category...
@@ -218,16 +214,9 @@ const AddRecord = () => {
               </span>
               <input
                 type="number"
-                name="amount"
-                id="amount"
-                min="0"
-                max="1000"
-                step="0.01"
-                value={amount}
-                onChange={(e) => setAmount(parseFloat(e.target.value) || 0)}
                 className="w-full pl-6 pr-3 py-2.5 bg-white/70 border-2 border-gray-200/80 rounded-xl placeholder-gray-400 text-sm font-semibold shadow-sm"
                 placeholder="0.00"
-                required
+                {...register("amount")}
               />
             </div>
             <span className="text-xs ml-2 font-normal hidden sm:inline">
@@ -236,14 +225,13 @@ const AddRecord = () => {
           </div>
         </div>
 
-        {/* Submit Button */}
         <button
           type="submit"
+          disabled={loading}
           className="w-full relative overflow-hidden bg-dark text-white px-4 py-3 sm:px-5 sm:py-4 rounded-xl font-semibold shadow-xl group transition-all duration-300 border-2 border-transparen text-sm sm:text-base"
-          disabled={isLoading}
         >
           <div className="relative flex items-center justify-center gap-2">
-            {isLoading ? (
+            {loading ? (
               <>
                 <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                 <span>Processing...</span>
@@ -285,4 +273,4 @@ const AddRecord = () => {
   );
 };
 
-export default AddRecord;
+export default AddNewRecord;

@@ -154,7 +154,7 @@ export async function categorizeExpense(description: string): Promise<string> {
       // max_tokens: 20,
     });
 
-    const category = completion.choices[0].message.content?.trim();
+    const category = completion.choices[0].message.content?.trim()
 
     const validCategories = [
       "Food",
