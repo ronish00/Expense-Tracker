@@ -14,17 +14,6 @@ const Navbar = () => {
         <Link href={"/"}>
           <span className="text-2xl font-bold ">Expense Tracker</span>
         </Link>
-        {/* <ul className="flex items-center gap-11">
-          <li>
-            <Link href={"/"}>Home</Link>
-          </li>
-          <li>
-            <Link href={"/about"}>About</Link>
-          </li>
-          <li>
-            <Link href={"/contact"}>Contact</Link>
-          </li>
-        </ul> */}
         <div>
           {user ? (
             <UserButton showName />

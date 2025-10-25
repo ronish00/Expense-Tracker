@@ -12,6 +12,7 @@
     "@clerk/nextjs": "^6.32.2",
     "@prisma/client": "^6.16.2",
     "next": "15.5.3",
+    "openai": "^6.7.0",
     "react": "19.1.0",
     "react-dom": "19.1.0"
   },
