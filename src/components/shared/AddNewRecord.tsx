@@ -1,7 +1,7 @@
 "use client";
 
-import addExpenseRecord from "@/lib/actions/addExpenseRecord";
-import { suggestCategory } from "@/lib/actions/suggestCategory";
+import addExpenseRecord from "@/lib/actions/addExpenseRecord.action";
+import { suggestCategory } from "@/lib/actions/suggestCategory.action";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
