@@ -11,7 +11,7 @@ export const formSchema = z.object({
   description: z.string(),
   date: z.string(),
   category: z.string(),
-  amount: z.number(),
+  amount: z.string(),
 });
 
 const AddNewRecord = () => {
@@ -27,7 +27,7 @@ const AddNewRecord = () => {
     defaultValues: {
       description: "",
       category: "",
-      amount: 50,
+      amount: "50",
     },
   });
 

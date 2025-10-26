@@ -21,7 +21,7 @@ async function addExpenseRecord(
   formData: z.infer<typeof formSchema>
 ): Promise<RecordResult> {
   const textValue = formData.description;
-  const amountValue = formData.amount;
+  const amountValue = parseInt(formData.amount);
   const categoryValue = formData.category;
   const dateValue = formData.date; // Extract date from formData
 

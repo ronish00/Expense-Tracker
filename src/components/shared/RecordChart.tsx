@@ -24,7 +24,7 @@ const RecordChart = () => {
       }
     };
     fetchRecords();
-  }, []);
+  }, [expenseRecords]);
 
   if (error) {
     return (
@@ -34,7 +34,7 @@ const RecordChart = () => {
             <span className="text-white text-sm sm:text-lg">📊</span>
           </div>
           <div>
-            <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100">
+            <h3 className="text-lg sm:text-xl font-bold">
               Expense Chart
             </h3>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
