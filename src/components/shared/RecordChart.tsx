@@ -1,30 +1,8 @@
 import { getRecords } from "@/lib/actions/records.action";
-import { useEffect, useState } from "react";
 import BarChart from "./BarChart";
 
-const RecordChart = () => {
-  const [error, setError] = useState<string | null>("");
-  const [expenseRecords, setExpenseRecords] = useState<ExpenseRecord[] | null>(
-    null
-  );
-  useEffect(() => {
-    const fetchRecords = async () => {
-      try {
-        const { records, error } = await getRecords();
-        if (error) {
-          setError(error);
-        }
-
-        if (records) {
-          setExpenseRecords(records);
-        }
-      } catch (error) {
-        setError("Failed to get records")
-        return;
-      }
-    };
-    fetchRecords();
-  }, [expenseRecords]);
+const RecordChart = async () => {
+  const { records, error } = await getRecords();
 
   if (error) {
     return (
@@ -34,9 +12,7 @@ const RecordChart = () => {
             <span className="text-white text-sm sm:text-lg">📊</span>
           </div>
           <div>
-            <h3 className="text-lg sm:text-xl font-bold">
-              Expense Chart
-            </h3>
+            <h3 className="text-lg sm:text-xl font-bold">Expense Chart</h3>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
               Visual representation of your spending
             </p>
@@ -57,7 +33,7 @@ const RecordChart = () => {
     );
   }
 
-  if (!expenseRecords || expenseRecords.length === 0) {
+  if (!records || records.length === 0) {
     return (
       <div className="bg-white/80 p-4 sm:p-6 rounded-2xl shadow-xl border border-gray-100/50 hover:shadow-2xl">
         <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
@@ -65,9 +41,7 @@ const RecordChart = () => {
             <span className="text-white text-sm sm:text-lg">📊</span>
           </div>
           <div>
-            <h3 className="text-lg sm:text-xl font-bold">
-              Expense Chart
-            </h3>
+            <h3 className="text-lg sm:text-xl font-bold">Expense Chart</h3>
             <p className="text-xs text-gray-500 mt-0.5">
               Visual representation of your spending
             </p>
@@ -96,9 +70,7 @@ const RecordChart = () => {
           <span className="text-white text-sm sm:text-lg">📊</span>
         </div>
         <div>
-          <h3 className="text-lg sm:text-xl font-bold">
-            Expense Chart
-          </h3>
+          <h3 className="text-lg sm:text-xl font-bold">Expense Chart</h3>
           <p className="text-xs text-gray-500 mt-0.5">
             Visual representation of your spending
           </p>
@@ -106,7 +78,7 @@ const RecordChart = () => {
       </div>
       <div className="overflow-x-auto">
         <BarChart
-          records={expenseRecords.map((record) => ({
+          records={records.map((record) => ({
             ...record,
             date: String(record.date),
           }))}

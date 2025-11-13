@@ -1,5 +1,3 @@
-"use client";
-
 import AddNewRecord from "@/components/shared/AddNewRecord";
 import AIInsights from "@/components/shared/AIInsights";
 import Container from "@/components/shared/Container";
@@ -8,10 +6,11 @@ import Guest from "@/components/shared/Guest";
 import RecordChart from "@/components/shared/RecordChart";
 import RecordHistory from "@/components/shared/RecordHistory";
 import { useUser } from "@/context/UserContext";
+import { currentUser } from "@clerk/nextjs/server";
 import Image from "next/image";
 
-const Home = () => {
-  const user = useUser();
+const Home = async() => {
+  const user = await currentUser();
 
   if (!user) {
     return <Guest />;
