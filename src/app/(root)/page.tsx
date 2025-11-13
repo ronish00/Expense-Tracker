@@ -77,7 +77,7 @@ const Home = () => {
           </section>
           <AddNewRecord />
         </div>
-        {/* riight column */}
+        {/* right column */}
         <div>
           <RecordChart />
           <ExpenseStats />

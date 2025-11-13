@@ -1,4 +1,4 @@
-import { getRecords } from "@/lib/actions/getRecords.action";
+import { getRecords } from "@/lib/actions/records.action";
 import { useEffect, useState } from "react";
 import BarChart from "./BarChart";
 

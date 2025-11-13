@@ -143,18 +143,22 @@ export async function categorizeExpense(description: string): Promise<string> {
         {
           role: "system",
           content:
-            "You are an expense categorization AI. Categorize expenses into one of these categories: Food, Transportation, Entertainment, Shopping, Bills, Healthcare, Other. Respond with only the category name.",
+            "You are an expense categorization AI. Categorize expenses into one of these categories: Food, Transportation, Entertainment, Shopping, Bills, Healthcare, Other. Always return only a single word — exactly one of these: Food, Transportation, Entertainment, Shopping, Bills, Healthcare, or Other.",
         },
         {
           role: "user",
           content: `Categorize this expense: "${description}"`,
         },
       ],
-      // temperature: 0.1,
-      // max_tokens: 20,
+      temperature: 0.1,
+      max_tokens: 20,
     });
 
-    const category = completion.choices[0].message.content?.trim()
+    const rawContent = completion.choices[0].message.content || "";
+    const cleanedCategory = rawContent
+      .replace(/<\｜begin▁of▁sentence｜>/g, "") // remove token artifacts
+      .replace(/<\｜end▁of▁sentence｜>/g, "")
+      .trim();
 
     const validCategories = [
       "Food",
@@ -166,8 +170,8 @@ export async function categorizeExpense(description: string): Promise<string> {
       "Other",
     ];
 
-    const finalCategory = validCategories.includes(category || "")
-      ? category!
+    const finalCategory = validCategories.includes(cleanedCategory || "")
+      ? cleanedCategory!
       : "Other";
     return finalCategory;
   } catch (error) {
