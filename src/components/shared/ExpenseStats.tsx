@@ -5,25 +5,46 @@ import {
 } from "@/lib/actions/records.action";
 import React, { useEffect, useState } from "react";
 
-const ExpenseStats = () => {
-  const [data, setData] = useState<any>(null);
-  const [error, setError] = useState<any>(null);
+interface Data {
+  userRecordResult: {
+    record?: number;
+    daysWithRecords?: number;
+    error?: string;
+  } | null;
+  rangeResult: {
+    bestExpense?: number;
+    worstExpense?: number;
+    error?: string;
+  } | null;
+}
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const [userRecordResult, rangeResult] = await Promise.all([
-          getUserRecord(),
-          getBestWorstExpense(),
-        ]);
-        setData({ userRecordResult, rangeResult });
-      } catch (error) {
-        console.error("Failed to load expense data:", error);
-        setError(error);
-        setData(null);
-      }
-    })();
-  }, []);
+const ExpenseStats = () => {
+  const [data, setData] = useState<Data | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+useEffect(() => {
+  (async () => {
+    const [userRecordResult, rangeResult] = await Promise.all([
+      getUserRecord(),
+      getBestWorstExpense(),
+    ]);
+
+    // ✅ Check for server-returned errors
+    if (userRecordResult.error || rangeResult.error) {
+      setError(
+        userRecordResult.error || rangeResult.error || "Failed to load data"
+      );
+      setData(null);
+    } else {
+      setData({ userRecordResult, rangeResult });
+      setError(null);
+    }
+  })().catch((err) => {
+    console.error("Unexpected error:", err);
+    setError("Something went wrong.");
+    setData(null);
+  });
+}, []);
 
   // ❌ Error state
   if (error) {
