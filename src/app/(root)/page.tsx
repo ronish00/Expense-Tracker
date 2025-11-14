@@ -67,7 +67,9 @@ const Home = async() => {
                   <div>
                     <p className="text-xs">Last Active</p>
                     <p className="font-semibold">
-                      {new Date(user.createdAt).toLocaleDateString()}
+                      { user.lastActiveAt ? new Date(user.lastActiveAt).toLocaleDateString()
+                        : new Date().toLocaleDateString()  
+                    }
                     </p>
                   </div>
                 </div>
