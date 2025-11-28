@@ -4,12 +4,10 @@ import Container from "@/components/shared/Container";
 import ExpenseStats from "@/components/shared/ExpenseStats";
 import Guest from "@/components/shared/Guest";
 import RecordChart from "@/components/shared/RecordChart";
-import RecordHistory from "@/components/shared/RecordHistory";
-import { useUser } from "@/context/UserContext";
 import { currentUser } from "@clerk/nextjs/server";
 import Image from "next/image";
 
-const Home = async() => {
+const Home = async () => {
   const user = await currentUser();
 
   if (!user) {
@@ -67,9 +65,9 @@ const Home = async() => {
                   <div>
                     <p className="text-xs">Last Active</p>
                     <p className="font-semibold">
-                      { user.lastActiveAt ? new Date(user.lastActiveAt).toLocaleDateString()
-                        : new Date().toLocaleDateString()  
-                    }
+                      {user.lastActiveAt
+                        ? new Date(user.lastActiveAt).toLocaleDateString()
+                        : new Date().toLocaleDateString()}
                     </p>
                   </div>
                 </div>
@@ -85,7 +83,6 @@ const Home = async() => {
         </div>
       </div>
       <AIInsights />
-      <RecordHistory />
     </Container>
   );
 };

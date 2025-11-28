@@ -68,7 +68,7 @@ export async function generateExpenseInsights(
     Return only valid JSON array, no additional text.`;
 
     const completion = await openai.chat.completions.create({
-      model: "deepseek/deepseek-chat-v3-0324:free",
+      model: "tngtech/deepseek-r1t-chimera:free",
       messages: [
         {
           role: "system",
@@ -89,20 +89,32 @@ export async function generateExpenseInsights(
       throw new Error("No response from AI");
     }
 
-    // Clean the response by removing markdown code blocks if present
+    // Extract JSON safely
     let cleanedResponse = response.trim();
-    if (cleanedResponse.startsWith("```json")) {
-      cleanedResponse = cleanedResponse
-        .replace(/^```json\s*/, "")
-        .replace(/\s*```$/, "");
-    } else if (cleanedResponse.startsWith("```")) {
-      cleanedResponse = cleanedResponse
-        .replace(/^```\s*/, "")
-        .replace(/\s*```$/, "");
+
+    // Remove code block wrappers
+    cleanedResponse = cleanedResponse.replace(/```json|```/g, "");
+
+    // Try to find the JSON portion using regex
+    const jsonMatch = cleanedResponse.match(/(\{[\s\S]*\}|\[[\s\S]*\])/);
+
+    if (!jsonMatch) {
+      console.error(
+        "Failed to extract JSON from AI response:",
+        cleanedResponse
+      );
+      throw new Error("No valid JSON found in AI response");
     }
 
-    // Parse AI response
-    const insights = JSON.parse(cleanedResponse);
+    const jsonStr = jsonMatch[0];
+
+    let insights;
+    try {
+      insights = JSON.parse(jsonStr);
+    } catch (err) {
+      console.error("JSON PARSE ERROR → Raw extracted JSON:", jsonStr);
+      throw err;
+    }
 
     // Add IDs and ensure proper format
     const formattedInsights = insights.map(
@@ -138,7 +150,7 @@ export async function generateExpenseInsights(
 export async function categorizeExpense(description: string): Promise<string> {
   try {
     const completion = await openai.chat.completions.create({
-      model: "deepseek/deepseek-chat-v3.1:free",
+      model: "tngtech/deepseek-r1t-chimera:free",
       messages: [
         {
           role: "system",
@@ -206,7 +218,7 @@ export async function generateAIAnswer(
     Return only the answer text, no additional formatting.`;
 
     const completion = await openai.chat.completions.create({
-      model: "deepseek/deepseek-chat-v3-0324:free",
+      model: "tngtech/deepseek-r1t-chimera:free",
       messages: [
         {
           role: "system",
@@ -233,3 +245,6 @@ export async function generateAIAnswer(
     return "I'm unable to provide a detailed answer at the moment. Please try refreshing the insights or check your connection.";
   }
 }
+
+
+
